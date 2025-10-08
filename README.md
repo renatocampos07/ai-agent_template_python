@@ -24,9 +24,10 @@
 │ ├── llm_provider.py        # Conexão com LLM (Bedrock, Azure Foundry, OpenAI).
 │ └── main.py                # Ponto de Entrada: HTTP Request e RAG.
 │
-├── ops/                     # Recursos Opcionais
-│ ├── ci/                    # CI/CD (GitHub Actions)
-│ │ └── deploy.yml
+├── ops/                     # Opcionais 
+│ ├── .github/               # CI/CD GitHub Actions (mover a pasta para raiz)
+│ │ └── workflows/
+│ │     └── deploy.yml
 │ ├── iaac/                  # IaC (Terraform)
 │ │ ├── main.tf              # Configurações de Cloud (Ex: AWS, Azure).
 │ │ └── kubernetes/          # Configurações K8s.
