@@ -22,7 +22,7 @@
 │ ├── vector_store.py        # Inicializa/consulta o Vector Store (FAISS).
 │ ├── prompts.py             # Definições e gestão de Engenharia de Prompt.
 │ ├── llm_provider.py        # Conexão com LLM (Bedrock, Azure Foundry, OpenAI).
-│ └── main.py                # Ponto de Entrada: HTTP Request e RAG.
+│ └── handler.py             # Ponto de Entrada Serverless.
 │
 ├── ops/                     # Opcionais 
 │ ├── .github/               # CI/CD GitHub Actions (mover a pasta para raiz)
