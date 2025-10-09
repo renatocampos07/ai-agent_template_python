@@ -15,34 +15,38 @@
 * **Frontend**: Livre (Ex. *React*, RPA). 
 * **Licença:** Uso livre, *MIT*. ️
 ---
+<details><summary>Veja mais</summary>
+
 ```
 .
 ├── src/
-│ ├── data_loader.py         # Carrega e divide documentos (semantic chunking).
-│ ├── vector_store.py        # Inicializa/consulta o Vector Store (FAISS).
-│ ├── prompts.py             # Definições e gestão de Engenharia de Prompt.
-│ ├── llm_provider.py        # Conexão com LLM (Bedrock, Azure Foundry, OpenAI).
-│ └── handler.py             # Ponto de Entrada Serverless.
+│   ├── data_loader.py          # Carrega e divide documentos (semantic chunking).
+│   ├── vector_store.py         # Inicializa/consulta o Vector Store (FAISS).
+│   ├── prompts.py              # Definições e gestão de Engenharia de Prompt.
+│   ├── llm_provider.py         # Conexão com LLM (Bedrock, Azure Foundry, OpenAI).
+│   └── handler.py              # Ponto de Entrada Serverless.
 │
-├── ops/                     # Opcionais 
-│ ├── .github/               # CI/CD GitHub Actions (mover a pasta para raiz)
-│ │ └── workflows/
-│ │     └── deploy.yml
-│ ├── iaac/                  # IaC (Terraform)
-│ │ ├── main.tf              # Configurações de Cloud (Ex: AWS, Azure).
-│ │ └── kubernetes/          # Configurações K8s.
-│ │     ├── deployment.yaml
-│ │     └── service.yaml
-│ ├── tests/                 
-│ │ ├── test_rag_query.py    # Testes de Assertividade do RAG.
-│ │ └── test_load.py         # Teste de Carga/Latência (5.000 requisições/min).
-│ ├── packages/              # Pacotes/Módulos proprietários (PyPI Interno/JFrog).
-│ └── docker-compose.yml     # Desenvolvimento multi-container.
+├── ops/                        # Opcionais
+│   ├── .github/                # CI/CD GitHub Actions
+│   │   └── workflows/
+│   │        └── deploy.yml
+│   ├── iaac/                   # IaC (Terraform)
+│   │   ├── main.tf             # Configurações de Cloud (Ex: AWS, Azure).
+│   │   └── kubernetes/         # Configurações K8s.
+│   │        ├── deployment.yaml
+│   │        └── service.yaml
+│   ├── tests/                  
+│   │   ├── test_rag_query.py   # Testes de Assertividade do RAG.
+│   │   └── test_load.py        # Teste de Carga/Latência.
+│   └── docker-compose.yml      # Desenvolvimento multi-container.
 │
-├── rag_data/                # Documentação bruta (RAG).
+├── rag_data/                   # Documentação bruta (RAG).
 ├── config/
-│ └── .env.example
-├── requirements.txt         # Dependências Python.
-├── vetorize.py              # Script para criar vetores (FAISS).
-└── Dockerfile               # Configuração do Container.
+│   └── .env.example
+├── requirements.txt            # Dependências Python.
+├── vetorize.py                 # Script para criar vetores (FAISS).
+└── Dockerfile                  # Configuração do Container.
 ```
+
+
+</details>
