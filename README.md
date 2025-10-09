@@ -7,8 +7,8 @@
 ---
 1.  **Config:** Preencha `config/.env` com chaves e modelos (LLM/Embedding).
 2.  **RAG:** Coloque docs em `rag_data/`. Crie vetores: `python vetorize.py`.
-3.  **Build:** Gere a imagem final: `docker build -t agente-ia-pronto:latest .`
-4.  **Deploy:** Faça o *Push* para o **Container Registry** (ACR, ECR, GCR, ICR).
+3.  **Build:** Gere a imagem do container: `docker build -t agente-ia-pronto:latest .`
+4.  **Deploy:** Faça *Push* no *Registry*. Implante em *Serverless* (AWS, Azure, On-premis).
 ---    
 * **Opcional**:  IaC **Terraform**, CI/CD **GitHub Actions**, **Docker Compose**, **K8s**.
 * **Testes:** Pasta *`tests/`* com validações de integridade/performance. 
