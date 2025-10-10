@@ -27,7 +27,7 @@
 │   └── handler.py              # Ponto de Entrada Serverless.
 │
 ├── ops/                        # Opcionais
-│   ├── .github/                # CI/CD GitHub Actions
+│   ├── .github/                # CI/CD GitHub Actions (colocar na pasta raiz)
 │   │   └── workflows/
 │   │        └── deploy.yml
 │   ├── iaac/                   # IaC (Terraform)
