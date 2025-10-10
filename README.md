@@ -1,5 +1,5 @@
 # 🤖 Template para Agentes de IA
----
+
 * **Visão Geral:** Estrutura base para projetos de IA (*boilerplate*).
 * **Objetivo:** Velocidade, portabilidade, escalabilidade.
 * **Back-end:** *Python*, *LangChain* (orquestração e *RAG*).
