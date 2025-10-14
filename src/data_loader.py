@@ -7,7 +7,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 def load_documents(data_dir: Path) -> List[Document]:
     """Carrega os arquivos suportados da pasta de RAG."""
-    supported_suffixes = {".txt", ".md"}
+    # Por padrão o loader principal trabalhará apenas com arquivos .txt.
+    # Loaders opcionais para .pdf/.docx podem ser adicionados em `src/loaders/`.
+    supported_suffixes = {".txt"}
     documents: List[Document] = []
 
     if not data_dir.exists():
@@ -22,10 +24,7 @@ def load_documents(data_dir: Path) -> List[Document]:
                 Document(page_content=text, metadata={"source": file_path.name})
             )
 
-    if not documents:
-        raise ValueError(
-            f"Nenhum documento suportado encontrado em '{data_dir}'. Adicione arquivos .txt ou .md."
-        )
+    # Se não houver documentos, retorna lista vazia (tolerante)
 
     return documents
 

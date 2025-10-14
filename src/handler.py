@@ -1,13 +1,12 @@
+"""Primary RAG handler supporting multiple deployment targets."""
+
+from __future__ import annotations
+
 import json
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, cast
 
 from langchain.chains import RetrievalQA
-
-try:
-    from google.api_core.exceptions import NotFound as GoogleModelNotFound
-except ImportError:  # pragma: no cover - fallback para ambientes sem google libs
-    GoogleModelNotFound = Exception  # type: ignore[assignment]
 
 from .data_loader import chunk_documents, load_documents
 from .llm_provider import get_embeddings, get_llm, get_settings
@@ -20,25 +19,21 @@ _QA_CHAIN: Optional[RetrievalQA] = None
 def _build_chain() -> RetrievalQA:
     settings = get_settings()
     embeddings = get_embeddings()
-
     store = load_vector_store(Path(settings.vector_store_path), embeddings)
     retriever = store.as_retriever(search_kwargs={"k": settings.rag_top_k})
 
-    qa_chain = RetrievalQA.from_chain_type(
+    return RetrievalQA.from_chain_type(
         llm=get_llm(),
         retriever=retriever,
         chain_type="stuff",
-        chain_type_kwargs={
-            "prompt": get_qa_prompt(),
-        },
+        chain_type_kwargs={"prompt": get_qa_prompt()},
         return_source_documents=True,
     )
 
-    return qa_chain
-
 
 def handler(event: Dict[str, Any], context: Any = None) -> Dict[str, Any]:
-    """Função handler compatível com Azure Functions / AWS Lambda HTTP."""
+    """Serverless-friendly entrypoint wrapping the RAG pipeline."""
+
     global _QA_CHAIN
     if _QA_CHAIN is None:
         try:
@@ -61,20 +56,8 @@ def handler(event: Dict[str, Any], context: Any = None) -> Dict[str, Any]:
             "body": json.dumps({"error": "Informe a pergunta no campo 'question'."}),
         }
 
-    try:
-        response = _QA_CHAIN.invoke({"query": question})
-    except GoogleModelNotFound as exc:
-        return {
-            "statusCode": 502,
-            "body": json.dumps(
-                {
-                    "error": "Modelo Google Generative AI não encontrado ou não habilitado.",
-                    "details": str(exc),
-                    "action": "Verifique GOOGLE_LLM_MODEL em config/.env (ex.: gemini-1.5-flash).",
-                }
-            ),
-        }
-
+    chain = cast(RetrievalQA, _QA_CHAIN)
+    response = chain.invoke({"query": question})
     sources = [
         {
             "source": doc.metadata.get("source"),
@@ -125,7 +108,8 @@ def _extract_question(event: Dict[str, Any]) -> Optional[str]:
 
 
 def warmup() -> None:
-    """Permite pré-aquecimento em plataformas serverless."""
+    """Cria a cadeia antecipadamente para cold start mais rápido."""
+
     if _QA_CHAIN is None:
         _initialize_chain()
 
@@ -146,8 +130,6 @@ if __name__ == "__main__":
         print("\nErro:", corpo["error"])
         if corpo.get("details"):
             print("Detalhes:", corpo["details"])
-        if corpo.get("action"):
-            print("Ação sugerida:", corpo["action"])
     else:
         print("\nResposta:\n", corpo.get("answer"))
         if corpo.get("sources"):

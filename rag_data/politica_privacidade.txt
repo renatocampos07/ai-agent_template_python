@@ -1,0 +1,15 @@
+Política de Privacidade Corporativa
+
+Resumo
+- Todos os dados dos colaboradores são tratados conforme LGPD.
+- Informações pessoais só podem ser acessadas por áreas autorizadas.
+
+Diretrizes
+1. Solicitações de acesso devem ser registradas no portal de privacidade.
+2. Dados sensíveis são criptografados em repouso e em trânsito.
+3. Incidentes devem ser reportados imediatamente ao DPO.
+
+Perguntas frequentes
+- Como solicitar acesso? Use o portal de privacidade.
+- Quem é o DPO? Consulte o diretório interno.
+- O que fazer em caso de vazamento? Reporte imediatamente via canal oficial.

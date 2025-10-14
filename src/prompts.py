@@ -1,10 +1,10 @@
+import os
 from langchain.prompts import PromptTemplate
 
-DEFAULT_SYSTEM_PROMPT = (
-    "Você é um agente corporativo multissetorial (RH e Produtos Financeiros) "
-    "que responde com base nos documentos internos fornecidos. "
-    "Resuma e explique de forma clara, cite benefícios quando aplicável "
-    "e avise quando não encontrar informação relevante."
+DEFAULT_SYSTEM_PROMPT = os.getenv(
+    "SYSTEM_PROMPT",
+    "Você é um agente que responde com base nos documentos fornecidos. " \
+    "Resuma e explique de forma clara e avise quando não encontrar informação relevante."
 )
 
 QA_PROMPT_TEMPLATE = """
