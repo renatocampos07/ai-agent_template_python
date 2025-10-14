@@ -16,6 +16,7 @@
 * **Licença:** Uso livre, *MIT*. ️
 ---
 <details><summary>Veja mais</summary>
+
 ```
 .
 ├── config/                  
