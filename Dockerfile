@@ -27,4 +27,4 @@ EXPOSE 8000
 # Variável de controle para auto geração do vector store (opcional)
 ENV AUTO_BUILD_VECTOR_STORE=false
 
-CMD ["uvicorn", "src.fastapi_server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
