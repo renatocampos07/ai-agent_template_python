@@ -12,12 +12,9 @@
 ---    
 * **Opcional**:  IaC **Terraform**, CI/CD **GitHub Actions**, **Docker Compose**, **K8s**.
 * **Testes:** Pasta *`tests/`* com validações de integridade/performance. 
-* **Frontend**: Livre (Ex. *React*, RPA). 
+* **Frontend**: Livre (Ex. *React*, *Gradio*, RPA). 
 * **Licença:** Uso livre, *MIT*. ️
 ---
-<details><summary>Diretório</summary>
-
-
 ```
 .
 ├── config/                  
@@ -35,29 +32,4 @@
   ├── prompts.py             # Define templates/lógica para LLM (Engenharia de Prompt)
   ├── handler.py             # Orquestra a pipeline RAG/LLM 
   └── main.py                # Executa API (uvicorn src.main:app)(GET /health POST /query)
- 
-└── ops/                     # OPCIONAL (Complementos de Customização/infra)
-  ├── providers/             # Outros provedores LLMs (Substitua llm_provider.py) 
-  ├── loaders/               # Outros formatos .pdf/.docx/sql (Substitua data_loader.py)
-  ├── tests/                 # Testes Assertividade do RAG/Carga/Latência 
-  ├── packages/              # Pacotes/Módulos proprietários (PyPI Interno/JFrog)
-  ├── poetry/                # Gerenciador de dependências do Poetry (.toml e .lock)
-  ├── docker-compose/        # Desenvolvimento multi-container (.yml)
-  ├── terraform/             # Infraestrutura como código (.tf)
-  ├── kubernetes/            # Configurações K8s (.yaml)
-  └── .git/                  # CI/CD GitHub Actions .yml (mover para pasta raiz)
-
 ```
-</details>
-
-<details><summary>Demonstração</summary>
-
-**Azure:** Com a imagem 
-- Build da imagem: `docker build -t <nomecontainer>.azurecr.io/app:latest .`
-- Push para Registry: `docker login <nomecontainer>.azurecr.io -u <usuario> -p <senha>` e `docker push <nomecontainer>.azurecr.io/app:latest`
-- Criar ACI: `az container create --resource-group <grupo> --name <nomeagente>-ia-demo --image <nomecontainer>.azurecr.io/app:latest --registry-login-server <nomecontainer>.azurecr.io --registry-username <usuario> --registry-password <senha> --dns-name-label <nomeagente>-ia-demo --ports 8000`
-- Testar na Cloud Shell: `Invoke-WebRequest http://<ip-ou-dns>:8000/health` e `Invoke-RestMethod -Uri "http://<ip-ou-dns>:8000/query" -Method Post -Body '{"question":"Sua pergunta"}' -ContentType "application/json"`
-
-![](/demo_azure.png)
-
-</details>
