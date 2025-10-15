@@ -8,51 +8,56 @@
 1.  **Config:** Preencha `config/.env` com chaves e modelos (LLM/Embedding).
 2.  **RAG:** Coloque docs em `rag_data/`. Crie vetores: `python vetorize.py`.
 3.  **Build:** Gere a imagem final: `docker build -t agente-ia-pronto:latest .`
-4.  **Deploy:** Faça o *Push* para o **Container Registry** (ACR, ECR, GCR, ICR).
+4.  **Deploy:** *Push* para **Container Registry**. Execute em *serverless* (Azure, AWS, GCP).
 ---    
 * **Opcional**:  IaC **Terraform**, CI/CD **GitHub Actions**, **Docker Compose**, **K8s**.
 * **Testes:** Pasta *`tests/`* com validações de integridade/performance. 
 * **Frontend**: Livre (Ex. *React*, RPA). 
 * **Licença:** Uso livre, *MIT*. ️
 ---
-<details><summary>Veja mais</summary>
+<details><summary>Diretório</summary>
+
 
 ```
 .
 ├── config/                  
-│ └── .env.example           # Copie para `.env` e informe chaves de LLM/embeddings
-├── rag_data/                # Documentação bruta (RAG). (Formato padrão txt)
-├── vetorize.py              # Script para criar vetores (FAISS).
-├── requirements.txt         # Dependências Python.
-├── Dockerfile               # Configuração do Container.
-├── src/
-│ ├── llm_provider.py        # Llm Gemini Google. Copie provedores extras se necessário.
-│ ├── data_loader.py         # Carrega e divide documentos (semantic chunking).
-│ ├── vector_store.py        # Inicializa/consulta o Vector Store (FAISS).
-│ ├── prompts.py             # Definições e gestão de Engenharia de Prompt.
-│ ├── handler.py             # Orquestra a pipeline RAG/LLM usada pelo servidor.
-│ └── main.py                # Ponto de entrada (FastAPI - GET /health, POST /query).
-│
-└── ops/                     # Componentes Adicionais
-  ├── providers/             # Opção de outros LLMs. Substitua src/llm_provider.py. 
-  │ ├── openai_provider.py   # Inclua `langchain-openai>=0.2.0` em requirements.txt.
-  │ ├── azure_provider.py    # Inclua `langchain-openai>=0.2.0`. Defina AZURE_* no .env.
-  │ └── bedrock_provider.py  # Inclua `langchain-aws>=0.1.3` e configure credenciais AWS.
-  ├── loaders/               # Opção de outros formatos. Substitua o data_loader.py
-  │ ├── pdf_loader.py        # Inclua `PyPDF2>=3.0.0` em requirements.txt
-  │ ├── docx_loader.py       # Inclua `python-docx>=0.8.11` em requirements.txt
-  │ └── postgresql_loader.py # Inclua `psycopg[binary]>=3.2.0`. Defina `PG_DSN` no `.env`
-  ├── tests/
-  │ ├── test_rag_query.py    # Testes de Assertividade do RAG.
-  │ └── test_load.py         # Teste de Carga/Latência (5.000 requisições/min).  
-  ├── .git/                  # CI/CD (GitHub Actions) - incluir na pasta raiz
-  │ └── deploy.yml
-  ├── packages/              # Pacotes/Módulos proprietários (PyPI Interno/JFrog).
-  ├── docker-compose.yml     # Desenvolvimento multi-container.
-  └── iaac/                  # IaC (Terraform)
-    ├── main.tf              # Configurações de Cloud (Ex: AWS, Azure, GCP).
-    └── kubernetes/          # Configurações K8s.
-        ├── deployment.yaml
-        └── service.yaml
+│ └── .env.example           # Modelo de variáveis de ambiente (LLM/embeddings)
+│ └── .env                   # Arquivo real contendo chaves (oculto pelo .gitignore)
+├── .gitignore               # Ignora arquivos/pastas locais e sensíveis
+├── rag_data/                # Documentos brutos para RAG (padrão .txt)
+├── vetorize.py              # Gera vetores FAISS do documentos
+├── requirements.txt         # Lista de dependências (Python 3.12)
+├── Dockerfile               # Configuração do Container (Docker/Rancher Desktop/WSL2)
+└── src/
+  ├── llm_provider.py        # Gestão da LLM/credenciais (padrão Gemini)
+  ├── data_loader.py         # Carrega e divide documentos (Chuncking semântico)
+  ├── vector_store.py        # Gerencia busca vetorial (Embedding/FAISS)
+  ├── prompts.py             # Define templates/lógica para LLM (Engenharia de Prompt)
+  ├── handler.py             # Orquestra a pipeline RAG/LLM 
+  └── main.py                # Executa API (uvicorn src.main:app)(GET /health POST /query)
+ 
+└── ops/                     # OPCIONAL (Complementos de Customização/infra)
+  ├── providers/             # Outros provedores LLMs (Substitua llm_provider.py) 
+  ├── loaders/               # Outros formatos .pdf/.docx/sql (Substitua data_loader.py)
+  ├── tests/                 # Testes Assertividade do RAG/Carga/Latência 
+  ├── packages/              # Pacotes/Módulos proprietários (PyPI Interno/JFrog)
+  ├── poetry/                # Gerenciador de dependências do Poetry (.toml e .lock)
+  ├── docker-compose/        # Desenvolvimento multi-container (.yml)
+  ├── terraform/             # Infraestrutura como código (.tf)
+  ├── kubernetes/            # Configurações K8s (.yaml)
+  └── .git/                  # CI/CD GitHub Actions .yml (mover para pasta raiz)
+
 ```
+</details>
+
+<details><summary>Demonstração</summary>
+
+**Azure:** Com a imagem 
+- Build da imagem: `docker build -t <nomecontainer>.azurecr.io/app:latest .`
+- Push para Registry: `docker login <nomecontainer>.azurecr.io -u <usuario> -p <senha>` e `docker push <nomecontainer>.azurecr.io/app:latest`
+- Criar ACI: `az container create --resource-group <grupo> --name <nomeagente>-ia-demo --image <nomecontainer>.azurecr.io/app:latest --registry-login-server <nomecontainer>.azurecr.io --registry-username <usuario> --registry-password <senha> --dns-name-label <nomeagente>-ia-demo --ports 8000`
+- Testar na Cloud Shell: `Invoke-WebRequest http://<ip-ou-dns>:8000/health` e `Invoke-RestMethod -Uri "http://<ip-ou-dns>:8000/query" -Method Post -Body '{"question":"Sua pergunta"}' -ContentType "application/json"`
+
+![](/demo_azure.png)
+
 </details>

@@ -5,7 +5,6 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 WORKDIR /app
 
-# Instala dependências de sistema mínimas para FAISS e libs Google
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
@@ -15,6 +14,9 @@ RUN apt-get update \
 COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
+
+# Garante que a pasta config existe
+RUN mkdir -p config
 
 COPY src ./src
 COPY vetorize.py ./
