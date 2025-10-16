@@ -42,6 +42,7 @@
 └── ops/                     # Complementos para customização e infra (Em desenvolvimento)
   ├── providers/             # Outros provedores LLMs (Substitua llm_provider.py) 
   ├── loaders/               # Outros formatos .pdf/.docx/sql (Substitua data_loader.py)
+  ├── agent_roles/           # Outros Multi-Agentes especializados (Substitua prompts.py)
   ├── tests/                 # Testes Assertividade do RAG/Carga/Latência 
   ├── packages/              # Pacotes/Módulos proprietários (PyPI Interno/JFrog)
   ├── poetry/                # Gerenciador de dependências do Poetry (.toml e .lock)
