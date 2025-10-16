@@ -134,7 +134,7 @@ def run() -> None:
     host = os.getenv("AGENT_SERVER_HOST", "0.0.0.0")
     port = int(os.getenv("AGENT_SERVER_PORT", "8000"))
     uvicorn.run(
-        "src.fastapi_server:app",
+        "src.main:app",
         host=host,
         port=port,
         reload=_str_to_bool(os.getenv("UVICORN_RELOAD", "false")),
